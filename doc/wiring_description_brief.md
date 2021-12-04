@@ -48,6 +48,16 @@ memcpy() to the rescue - addresses this:
   -- snip --
 ```
 
+The extra NULL ('\000') was appended to the string literal (in double-quotes) as a consequence of empirical testing; without it, an extra junk character (a 'heart' char) was printed to the LCD.
+
+The array index (here as '6') was carefully chosen as the minimum (storage fit for the literal "piper" plus an embedded NULL, following; for six characters in total, of required storage).
+
+Further testing was not done (try a character array index value of 5 or 7, for comparison).
+
+`'sizeof lcd_buffer'` can be captured and printed, for diagnostics and further understanding.
+
+Future intent is to size correctly to this (very) LCD width (so '6' will become '16' maybe - don't recall the count of characters that fit the width).  Padding (ASCII 32, or 0x20 or \040) will be used, perhaps, to keep things simple.
+
 Purists: the author apologizes here for winging it wrt the programming language employed.
 
 Technique is entirely based on monkey-see, monkey-do - no effort was made to use the C/C++ language elements (or libraries) remotely 'properly'.
