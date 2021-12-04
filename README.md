@@ -26,9 +26,8 @@ its pinout is here:
 
   [ https://cdn-shop.adafruit.com/970x728/250-04.jpg ]
 
-It's wired to Feather M0 Express on the top row, D5-D11:
-
-  TODO - rendering the below?
+It's wired to Feather M0 Express on the top row, D11-D5
+  (contiguous, five pins exactly):
 
 ```
   -- snip --
