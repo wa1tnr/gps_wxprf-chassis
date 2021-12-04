@@ -14,5 +14,22 @@ the USB pass-through is here:
 
   [ https://www.adafruit.com/product/3258 ]
 
+the buzzer (passive) is here:
+
+  [ https://www.adafruit.com/product/160 ]
+
+the graphic LCD is here:
+
+  [ https://www.adafruit.com/product/250 ]
+
+its pinout is here:
+
+  [ https://cdn-shop.adafruit.com/970x728/250-04.jpg ]
+
+It's wired to Feather M0 Express on the top row, D5-D11:
+
+  TODO
+
+
 
 END.
