@@ -1,0 +1,17 @@
+Sat  4 Dec 11:50:43 UTC 2021
+
+The Feather GPS is stacked onto a Feather M0 Express underneath it.
+
+Proper stacking headers were used (female above the board components; male pins passing through the copper clad holes at the edges per the design).
+
+Feather M0 Express mounted on a smaller breadboard (old Radio Shack type).
+
+Extra long pin headers used throughout, to make connections using Dupont style jumpers (like those used on older PC motherboards to accept items like reset switches, external speaker, HDD activity LED &c.).
+
+A singleton green blinkie LED on a second Radio Shack breadboard (below the LCD; the Feather and GPS are above the LCD as mounted in the chassis).  It's (probably) on D4 or maybe A4 (don't remember).  Gets a current-limiting resistor.
+
+Maybe the buzzer is on A5 - probably a straight DC interconnect (GPIO pin to buzzer to ground, no current-limiting resistor at all).
+
+Rotary encoder was mounted on one or two small pieces of perfboard (if two, stacked, just for extra firm mechanicals).
+
+Used a 'threading' technique to pass the wires from the (possibly) soldered connection (approx. five of them) to the main project, for mechanical stability.
