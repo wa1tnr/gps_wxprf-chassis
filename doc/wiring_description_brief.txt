@@ -26,6 +26,8 @@ Each cathode is grounded individually, to turn that backlight color on, but only
 
 An existing lib for the LCD (from the author's hard disk) was used, from 'back in the day' and may not be up to date.
 
+ - - -
+
 In December 2021, a current Arduino IDE compiler did complain about stuff with drawing strings on the LCD .. and there was junk on the screen that was a bit of a mystery.
 
 memcpy() to the rescue - addresses this:
