@@ -40,10 +40,12 @@ It's wired to Feather M0 Express on the top row, D5-D11:
  138
  139 // Use MOSI and SCK hardware pins on D29 and D30:
  140 // ST7565 glcd(29, 30, 9, 6, 5);
- 141 ST7565 glcd(11, 10, 9, 6, 5);
+ 141 ST7565 glcd(11, 10, 9, 6, 5);  // stands as-is 4 Dec 2021
 
   -- snip --
 ```
+
+Note: D29 D30 old news - corrected to D11 and D10 there.
 
 
 END.
