@@ -9,3 +9,10 @@ the GPS module is here:
   [ https://www.adafruit.com/product/3133 ]
 
 (Looks like it, anyway - could be another one from them but this is probably it)
+
+the USB pass-through is here:
+
+  [ https://www.adafruit.com/product/3258 ]
+
+
+END.
