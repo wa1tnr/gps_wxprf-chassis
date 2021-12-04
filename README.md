@@ -1,4 +1,14 @@
-Fri  3 Dec 21:00:47 UTC 2021
+GPS in Weatherproof - Chassis code and mechanicals
+
+Sat  4 Dec 11:45:17 UTC 2021
+
+Wanted functional units to test individual hardware
+enclosed in a single chassis.
+
+Chassis already wired (2017) and tested on old
+firmware.  This project aims to update and to
+document to some extent. ;)
+
 
 the chassis is here:
 
