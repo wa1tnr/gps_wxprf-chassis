@@ -272,18 +272,6 @@ void reset_positions(void) {
     oldPositionExternal = 0;
 }
 
-void decrement_positions(void) {
-    positionInternal++;
-    positionExternal++;
-    oldPositionExternal++;
-}
-
-void increment_positions(void) {
-    positionInternal++;
-    positionExternal++;
-    oldPositionExternal++;
-}
-
 void lcd_rot_multi_3_to_9_alts(void) {
     int col = 84;
     int fake = 0;
