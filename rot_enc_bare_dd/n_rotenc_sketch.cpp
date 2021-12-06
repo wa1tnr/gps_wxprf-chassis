@@ -1,4 +1,4 @@
-// Mon  6 Dec 16:24:42 UTC 2021
+// Mon  6 Dec 21:20:13 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
 #include "ST7565.h"
@@ -116,9 +116,9 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00d  16:31z");
+    glcd.drawstring(1, 1, "RTver 00-00e  21:19z");
     glcd.drawstring(1, 3, "  CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3pb");
+    glcd.drawstring(1, 5, " ra01k  c3pc");
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp dd 06DEC21 ");
     glcd.display();
@@ -342,11 +342,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
 int locked = 0; // FALSE
 int lock_tick = 0; // count
 
-void proc_sw(void) { // DO WE NEED PROCESS OR NOT
-}
-
 void proc_tick(void) { // a 'tick' of the rotary shaft encoder signal train
-// volatile int sigA_cpy // volatile int sigB_cpy
     int8_t thisState = sigA_cpy | (sigB_cpy << 1);
     if (oldState != thisState) {
 
@@ -359,7 +355,6 @@ void proc_tick(void) { // a 'tick' of the rotary shaft encoder signal train
 
         oldState = thisState;
     }
-    // wild guessin 4 dec 2021 17:38z KLUDGE:
 }
 
 void store_tick(void) { // FIFO stuff
@@ -368,7 +363,6 @@ void store_tick(void) { // FIFO stuff
 }
 
 void get_tick(void) {
-// volatile int sigA_cpy // volatile int sigB_cpy
     sigB_cpy = pop();
     sigA_cpy = pop();
 }
@@ -380,13 +374,8 @@ void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
             // ignore tick when locked == -1
             store_tick(); // FIFO stuff
 
-            /*  WARNING   */// okay, well, advisory notice ;)
-
-// proc_tick(); no longer is used but it should be used somewhere.  INTERIM development state.  KLUDGE.
-
             get_tick(); // populate sigA_cpy and sigB_cpy
 
-            // proc_tick(); // if there was an interrupt recently, process the data in the globals sigA sigB
             proc_tick();
 
             lcd_rot_multi_3_to_9_alts();
