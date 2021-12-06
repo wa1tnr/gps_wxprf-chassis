@@ -95,10 +95,23 @@ ST7565 glcd(11, 10, 9, 6, 5); // good 4 Dec 2021
 
 void glcd_is_busy(void) {
     glcd_busy = -1; // TRUE
-    // inhibit RotaryEncoder ISR?
+    // inhibit RotaryEncoder ISR
+    detachInterrupt(encoderKnobPinA);
+    detachInterrupt(encoderKnobPinB);
 }
+
+/* ISR - rotary shaft encoder - front panel control knob */
+void tick_isr() {
+    sigA = digitalRead(encoderKnobPinB);
+    sigB = digitalRead(encoderKnobPinA);
+
+    tick_recent = -1; // TRUE -- if FALSE here, the thing stalls out nicely
+}
+
 void glcd_not_busy(void) {
     glcd_busy = 0; // FALSE, go ahead, LCD doesn't need timing resources
+    attachInterrupt(encoderKnobPinA, tick_isr, FALLING);
+    attachInterrupt(encoderKnobPinB, tick_isr, FALLING);
 }
 
 void lcd_revision(void) {
@@ -119,14 +132,6 @@ void lcd_revision(void) {
 void sw_isr() { // ref: const uint8_t   pbSwitch = A3;
     sigSw = digitalRead(pbSwitch);
     pbswitch_recent = -1; // TRUE
-}
-
-/* ISR - rotary shaft encoder - front panel control knob */
-void tick_isr() {
-    sigA = digitalRead(encoderKnobPinB);
-    sigB = digitalRead(encoderKnobPinA);
-
-    tick_recent = -1; // TRUE -- if FALSE here, the thing stalls out nicely
 }
 
 // ISR above here
