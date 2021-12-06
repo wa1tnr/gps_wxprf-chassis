@@ -68,7 +68,6 @@ const int8_t KNOBDIR[] = {
 
 volatile int positionInternal = 0;
 volatile int positionExternal = 0;
-volatile int hysteresis_upward = 0;
 
 // above: ROTARY ENCODER stuff
 
@@ -107,9 +106,9 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00g  21:48z");
+    glcd.drawstring(1, 1, "RTver 00-00h  22:12z");
     glcd.drawstring(1, 3, "  CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3pe");
+    glcd.drawstring(1, 5, " ra01k  c3pf");
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp dd 06DEC21 ");
     glcd.display();
@@ -258,9 +257,23 @@ void lcd_rot_multi_alts(void) {
     itoa(positionExternal, bufferln, DEC);
 
     glcd_is_busy();
-    glcd.drawstring(col + 18, 3, "Y- ");
-    glcd.drawstring(col + 12, 3, bufferln);
-    glcd.drawstring(col, 3, " -");
+    glcd.drawstring(col + 18, 3, "<< ");
+
+    if (positionExternal > -1) {
+        glcd.drawstring(col + 12, 3, bufferln);
+        if (positionExternal == 0) {
+            glcd.drawstring(col, 3, "  ");
+        }
+        if (positionExternal != 0) {
+            glcd.drawstring(col, 3, " +");
+        }
+    }
+
+    if (positionExternal < 0) {
+        glcd.drawstring(col +  6, 3, bufferln);
+        glcd.drawstring(col, 3, " -");
+    }
+
     glcd.display(); // IMPORTANT CHANGE
     glcd_not_busy();
 }
@@ -268,11 +281,6 @@ void lcd_rot_multi_alts(void) {
 void lcd_rot_multi_3_to_9_alts(void) {
     int col = 84;
     int fake = 0;
-
-    glcd_is_busy();
-    glcd.drawstring(89, 7, "145.03"); // was " birds" leading space
-    glcd_not_busy();
-
 
     if (positionExternal == 0) {
         glcd_is_busy();
@@ -375,7 +383,6 @@ void proc_tick(void) { // a 'tick' of the rotary shaft encoder signal train
 
         positionInternal += KNOBDIR[thisState | (oldState << 2)];
 
-        hysteresis_upward += KNOBDIR[thisState | (oldState << 2)];
 
         if (thisState == LATCHSTATE)
             positionExternal = positionInternal >> 2;
