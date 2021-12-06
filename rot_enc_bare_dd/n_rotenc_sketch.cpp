@@ -259,9 +259,9 @@ void lcd_rot_multi_alts(void) {
     itoa(positionExternal, bufferln, DEC);
 
     glcd_is_busy();
+    glcd.drawstring(col + 18, 3, "Y- ");
     glcd.drawstring(col + 12, 3, bufferln);
     glcd.drawstring(col, 3, " -");
-    glcd.drawstring(col + 18, 3, "Y- ");
     glcd.display(); // IMPORTANT CHANGE
     glcd_not_busy();
 }
@@ -292,6 +292,26 @@ void lcd_rot_multi_3_to_9_alts(void) {
     glcd.drawstring(89, 7, "145.03"); // was " birds" leading space
     glcd_not_busy();
 
+
+    if (positionExternal == 0) {
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *0*");
+        glcd_not_busy();
+    }
+
+    if (positionExternal == 1) {
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *1*");
+        glcd_not_busy();
+    }
+
+    if (positionExternal == 2) {
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *2*");
+        glcd_not_busy();
+    }
+
+
     if (positionExternal == 3) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " &3&");
@@ -319,6 +339,16 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_not_busy();
         }
 
+
+        if (positionExternal == 7) {
+            glcd_is_busy();
+            glcd.drawstring(col, 1, " *7*");
+            glcd_not_busy();
+        }
+
+
+
+
         if (positionExternal == 8) {
             glcd_is_busy();
             glcd.drawstring(col, 1, " ?8?");
@@ -328,6 +358,30 @@ void lcd_rot_multi_3_to_9_alts(void) {
                 morseKludgeFlg = 0;
             }
         }
+
+
+        if (positionExternal == 9) {
+            glcd_is_busy();
+            glcd.drawstring(col, 1, " *9*");
+            glcd_not_busy();
+        }
+
+
+        if (positionExternal == 10) {
+            glcd_is_busy();
+            glcd.drawstring(col, 1, "*10*");
+            glcd_not_busy();
+        }
+
+
+        if (positionExternal >= 11) {
+            glcd_is_busy();
+            glcd.drawstring(col, 1, "*HI*");
+            glcd_not_busy();
+        }
+
+
+
     }
 }
 
