@@ -83,7 +83,9 @@ volatile int hysteresis_upward = 0;
 
 int ledPin = 13; // LED connected to digital pin 13
 int buzzPin = A5;
+/*
 uint32_t timer = millis();
+*/
 
 // Adafruit_GPS GPS(&GPSSerial);
 
@@ -93,6 +95,7 @@ ST7565 glcd(11, 10, 9, 6, 5); // good 4 Dec 2021
 
 void glcd_is_busy(void) {
     glcd_busy = -1; // TRUE
+    // inhibit RotaryEncoder ISR?
 }
 void glcd_not_busy(void) {
     glcd_busy = 0; // FALSE, go ahead, LCD doesn't need timing resources
@@ -396,23 +399,19 @@ void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
 
 void loop() // run over and over again
 {
-
-    // char c = GPS.read();
-    char c = 'A'; // kludge - was GPS.read();
-
     if (tick_recent) {
         loop_for_rotEnc();
     }
 
+/*
     if (timer > millis())
         timer = millis();
 
     if (millis() - timer > 1700) {
         timer = millis(); // reset the timer
-
-        if (0) {
-        }
+        if (0) { }
     }
+*/
 }
 
 // 4 dec 2021  20:46:28
