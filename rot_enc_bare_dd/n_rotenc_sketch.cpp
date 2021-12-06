@@ -4,12 +4,6 @@
 #include "ST7565.h"
 #include "r_neo_pixel.h"
 
-#define BACKLIGHT_LED 4
-#define LOGO16_GLCD_HEIGHT 16
-#define LOGO16_GLCD_WIDTH  16
-#define GPSSerial Serial1 // what's the name of the hardware serial port?
-#define GPSECHO false
-
 // stack ops/fifo  see:
 //   https://github.com/wa1tnr/Metro-M4-Express-interpreter/blob/master/interpret_m4/interpret_m4.ino
 const int STKSIZE = 8;
@@ -87,8 +81,6 @@ int buzzPin = A5;
 uint32_t timer = millis();
 */
 
-// Adafruit_GPS GPS(&GPSSerial);
-
 ST7565 glcd(11, 10, 9, 6, 5); // good 4 Dec 2021
 
 // definitions follow
@@ -116,7 +108,7 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00e  21:19z");
+    glcd.drawstring(1, 1, "RTver 00-00e  21:26z");
     glcd.drawstring(1, 3, "  CHUPACABRA");
     glcd.drawstring(1, 5, " ra01k  c3pc");
     glcd.drawstring(1, 5, " bare rotary encoder");
