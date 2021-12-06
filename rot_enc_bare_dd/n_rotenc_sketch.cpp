@@ -47,6 +47,7 @@ int pop(void) {
     return n;
 }
 
+volatile int glcd_busy = 0; // -1 is busy
 volatile int sigA = 0;
 volatile int sigA_cpy = 0;
 volatile int sigB = 0;
@@ -90,7 +91,15 @@ ST7565 glcd(11, 10, 9, 6, 5); // good 4 Dec 2021
 
 // definitions follow
 
+void glcd_is_busy(void) {
+    glcd_busy = -1; // TRUE
+}
+void glcd_not_busy(void) {
+    glcd_busy = 0; // FALSE, go ahead, LCD doesn't need timing resources
+}
+
 void lcd_revision(void) {
+    glcd_is_busy();
     glcd.drawstring(1, 1, "RTver 00-00d  16:31z");
     glcd.drawstring(1, 3, "  CHUPACABRA");
     glcd.drawstring(1, 5, " ra01k  c3pb");
@@ -98,6 +107,7 @@ void lcd_revision(void) {
     glcd.drawstring(1, 7, " FIFO exp dd 06DEC21 ");
     glcd.display();
     glcd.clear(); // use sparingly
+    glcd_not_busy();
 }
 
 //  - - - - ------------------- ROTARY ENCODER ------------------
@@ -135,12 +145,16 @@ void setup_rotEnc(void) {
 void setup_LCD() {
     pinMode(backlight, OUTPUT);
     digitalWrite(backlight, LOW); // turn it off, brother
+    glcd_is_busy();
     glcd.begin(0x18);
+    glcd_not_busy();
 
     digitalWrite(backlight, HIGH); // turn it on, sister
 
+    glcd_is_busy();
     glcd.display(); // show splashscreen
     glcd.clear();
+    glcd_not_busy();
     delay(700);
     lcd_revision();
     delay(700);
@@ -244,11 +258,12 @@ void lcd_rot_multi_alts(void) {
     int col = 84;
     itoa(positionExternal, bufferln, DEC);
 
+    glcd_is_busy();
     glcd.drawstring(col + 12, 3, bufferln);
     glcd.drawstring(col, 3, " -");
     glcd.drawstring(col + 18, 3, "Y- ");
     glcd.display(); // IMPORTANT CHANGE
-
+    glcd_not_busy();
 }
 
 void reset_positions(void) {
@@ -273,29 +288,41 @@ void lcd_rot_multi_3_to_9_alts(void) {
     int col = 84;
     int fake = 0;
 
+    glcd_is_busy();
     glcd.drawstring(89, 7, "145.03"); // was " birds" leading space
+    glcd_not_busy();
 
     if (positionExternal == 3) {
+        glcd_is_busy();
         glcd.drawstring(col, 1, " &3&");
+        glcd_not_busy();
         digitalWrite(backlight, LOW); // turn it off, brother
     }
     if (positionExternal == 4) {
+        glcd_is_busy();
         glcd.drawstring(col, 1, " ~4~");
+        glcd_not_busy();
         digitalWrite(backlight, HIGH); // turn it on, sister
     }
     if (positionExternal == 5) {
+        glcd_is_busy();
         glcd.drawstring(col, 1, " *5*");
+        glcd_not_busy();
         morseKludgeFlg = -1;
     }
 
     if (positionExternal >= 6) {
 
         if (positionExternal == 6) {
+            glcd_is_busy();
             glcd.drawstring(col, 1, " #6#");
+            glcd_not_busy();
         }
 
         if (positionExternal == 8) {
+            glcd_is_busy();
             glcd.drawstring(col, 1, " ?8?");
+            glcd_not_busy();
             if (morseKludgeFlg) {
                 morse();
                 morseKludgeFlg = 0;
