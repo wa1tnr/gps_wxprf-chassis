@@ -108,9 +108,9 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00e  21:26z");
+    glcd.drawstring(1, 1, "RTver 00-00f  21:45z");
     glcd.drawstring(1, 3, "  CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3pc");
+    glcd.drawstring(1, 5, " ra01k  c3pd");
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp dd 06DEC21 ");
     glcd.display();
@@ -264,12 +264,6 @@ void lcd_rot_multi_alts(void) {
     glcd.drawstring(col, 3, " -");
     glcd.display(); // IMPORTANT CHANGE
     glcd_not_busy();
-}
-
-void reset_positions(void) {
-    positionInternal = 0;
-    positionExternal = 0;
-    oldPositionExternal = 0;
 }
 
 void lcd_rot_multi_3_to_9_alts(void) {
