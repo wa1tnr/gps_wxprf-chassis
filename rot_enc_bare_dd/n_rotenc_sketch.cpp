@@ -68,7 +68,6 @@ const int8_t KNOBDIR[] = {
 
 volatile int positionInternal = 0;
 volatile int positionExternal = 0;
-volatile int oldPositionExternal = 0;
 volatile int hysteresis_upward = 0;
 
 // above: ROTARY ENCODER stuff
@@ -108,9 +107,9 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00f  21:45z");
+    glcd.drawstring(1, 1, "RTver 00-00g  21:48z");
     glcd.drawstring(1, 3, "  CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3pd");
+    glcd.drawstring(1, 5, " ra01k  c3pe");
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp dd 06DEC21 ");
     glcd.display();
@@ -411,7 +410,6 @@ void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
         tick_recent = 0; // reset tick_recent -- set the trap for a new acquisition
     }
 
-    oldPositionExternal = positionExternal;
     lcd_rot_multi_alts(); // not single-shot; do every loop
 
     if (pbswitch_recent) {
