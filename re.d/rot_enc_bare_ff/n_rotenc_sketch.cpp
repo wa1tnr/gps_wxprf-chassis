@@ -1,4 +1,4 @@
-// Tue  7 Dec 16:35:57 UTC 2021
+// Tue  7 Dec 17:07:37 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
 #include "ST7565.h"
@@ -108,10 +108,10 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00p  16:35z");
-    glcd.drawstring(1, 3, "             48fa9a8"); // previous commit
+    glcd.drawstring(1, 1, "RTver 00-00q  17:07z");
+    glcd.drawstring(1, 3, "             39e659a"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q8"); // overwritten by:
+    glcd.drawstring(1, 5, " ra01k  c3q9"); // overwritten by:
     glcd.drawstring(1, 5, " rotary enc  dvlp-aa");
     glcd.drawstring(1, 7, " FIFO ff 07 DEC 2021 ");
     glcd.display();
