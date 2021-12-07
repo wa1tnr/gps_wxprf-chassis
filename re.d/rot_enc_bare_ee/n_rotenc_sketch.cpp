@@ -1,6 +1,4 @@
 // Tue  7 Dec 12:19:20 UTC 2021
-// UNRESPONSIVE - degraded performance (still determinate, mostly)
-// Nice twin-ISR experiment.  But is graded as a fail. ;)
 // Mon  6 Dec 21:20:13 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
@@ -53,7 +51,7 @@ volatile int sigSw = 0;
 
 volatile int morseKludgeFlg = 0;
 
-volatile uint8_t tick_recent_A, tick_recent_B, pbswitch_recent, neoPixel2_recent, lcd_clear_recent = 0; // FALSE
+volatile uint8_t tick_recent, pbswitch_recent, neoPixel2_recent, lcd_clear_recent = 0; // FALSE
 
 const uint8_t encoderKnobPinA = A1; // simple ints for D1 and D2 &c.  A1 only needed for the analog pins
 const uint8_t encoderKnobPinB = A2;
@@ -94,23 +92,17 @@ void glcd_is_busy(void) {
 }
 
 /* ISR - rotary shaft encoder - front panel control knob */
-void tick_isr_B() {
+void tick_isr() {
     sigA = digitalRead(encoderKnobPinB);
-
-    tick_recent_B = -1; // TRUE -- if FALSE here, the thing stalls out nicely
-}
-
-/* ISR - rotary shaft encoder - front panel control knob */
-void tick_isr_A() {
     sigB = digitalRead(encoderKnobPinA);
 
-    tick_recent_A = -1; // TRUE -- if FALSE here, the thing stalls out nicely
+    tick_recent = -1; // TRUE -- if FALSE here, the thing stalls out nicely
 }
 
 void glcd_not_busy(void) {
     glcd_busy = 0; // FALSE, go ahead, LCD doesn't need timing resources
-    attachInterrupt(encoderKnobPinA, tick_isr_A, FALLING);
-    attachInterrupt(encoderKnobPinB, tick_isr_B, FALLING);
+    attachInterrupt(encoderKnobPinA, tick_isr, FALLING);
+    attachInterrupt(encoderKnobPinB, tick_isr, FALLING);
 }
 
 void lcd_revision(void) {
@@ -145,8 +137,8 @@ void setup_rotEnc(void) {
     digitalWrite(encoderKnobPinB, HIGH);
     digitalWrite(pbSwitch, HIGH);
 
-    attachInterrupt(encoderKnobPinA, tick_isr_A, FALLING); // inverted dec 2021
-    attachInterrupt(encoderKnobPinB, tick_isr_B, FALLING); // inverted dec 2021
+    attachInterrupt(encoderKnobPinA, tick_isr, FALLING); // inverted dec 2021
+    attachInterrupt(encoderKnobPinB, tick_isr, FALLING); // inverted dec 2021
     attachInterrupt(pbSwitch, sw_isr, FALLING);
 }
 
@@ -288,42 +280,26 @@ void lcd_rot_multi_alts(void) {
     glcd_not_busy();
 }
 
-void nopp(void) { } // no operation
-
 void lcd_rot_multi_3_to_9_alts(void) {
     int col = 84;
     int fake = 0;
 
-    int indexed = positionExternal;
+    if (positionExternal == 0) {
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *0*");
+        glcd_not_busy();
+    }
 
-    switch(indexed) {
-
-        case 0:
-        _meaningful_label_A:
-
-    // if (positionExternal == 0) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, " *0*");
-            glcd_not_busy();
-            goto ending; // break;
-    // }
-
-        case 1:
-        _meaningful_label_B:
-    // if (positionExternal == 1) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, " *1*");
-            glcd_not_busy();
-            goto ending; // break;
-        // return;
-    // }
-} // switch
+    if (positionExternal == 1) {
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *1*");
+        glcd_not_busy();
+    }
 
     if (positionExternal == 2) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *2*");
         glcd_not_busy();
-        return;
     }
 
 
@@ -395,14 +371,9 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_not_busy();
         }
 
-    } // greater than six
 
-ending:
-    // return; if inside other stuff this seems legal; is trivial here at the end
 
-    nopp();
-    // glcd_not_busy(); // filler - did not want this but maybe is a good idea as a catch-all.
-
+    }
 }
 
 int locked = 0; // FALSE
@@ -432,9 +403,9 @@ void get_tick(void) {
     sigA_cpy = pop();
 }
 
-void loop_for_rotEnc(void) { // if tick_recent (x2, AND)  or  if pbswitch_recent
+void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
 
-    if (tick_recent_A && tick_recent_B) {
+    if (tick_recent) {
         if (locked == 0) {
             // ignore tick when locked == -1
             store_tick(); // FIFO stuff
@@ -445,8 +416,7 @@ void loop_for_rotEnc(void) { // if tick_recent (x2, AND)  or  if pbswitch_recent
 
             lcd_rot_multi_3_to_9_alts();
         }
-        tick_recent_A = 0; // reset tick_recent -- set the trap for a new acquisition
-        tick_recent_B = 0;
+        tick_recent = 0; // reset tick_recent -- set the trap for a new acquisition
     }
 
     lcd_rot_multi_alts(); // not single-shot; do every loop
@@ -458,7 +428,7 @@ void loop_for_rotEnc(void) { // if tick_recent (x2, AND)  or  if pbswitch_recent
 
 void loop() // run over and over again
 {
-    if (tick_recent_A && tick_recent_B) {
+    if (tick_recent) {
         loop_for_rotEnc();
     }
 
