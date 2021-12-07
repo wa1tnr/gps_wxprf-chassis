@@ -290,43 +290,52 @@ void lcd_rot_multi_3_to_9_alts(void) {
     case 0:
     _meaningfulLabel_zed:
 
-    if (positionExternal == 0) {
+    // if (positionExternal == 0) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *0*");
         glcd_not_busy();
         goto ending;
-    }
+    // }
 
-    if (positionExternal == 1) {
+    case 1:
+    _meaningfulLabel_one:
+    // if (positionExternal == 1) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *1*");
         glcd_not_busy();
-    }
+        goto ending;
+    // }
 
-    if (positionExternal == 2) {
+    case 2:
+    // if (positionExternal == 2) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *2*");
         glcd_not_busy();
-    }
+        goto ending;
+    // }
 
 
-    if (positionExternal == 3) {
+    case 3:
+    // if (positionExternal == 3) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " &3&");
         glcd_not_busy();
         digitalWrite(backlight, LOW); // turn it off, brother
-    }
+        goto ending;
+    // }
     if (positionExternal == 4) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " ~4~");
         glcd_not_busy();
         digitalWrite(backlight, HIGH); // turn it on, sister
+        goto ending;
     }
     if (positionExternal == 5) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *5*");
         glcd_not_busy();
         morseKludgeFlg = -1;
+        goto ending;
     }
 
     if (positionExternal >= 6) {
@@ -335,6 +344,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_is_busy();
             glcd.drawstring(col, 1, " #6#");
             glcd_not_busy();
+            goto ending;
         }
 
 
@@ -342,6 +352,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_is_busy();
             glcd.drawstring(col, 1, " *7*");
             glcd_not_busy();
+            goto ending;
         }
 
 
@@ -355,6 +366,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
                 morse();
                 morseKludgeFlg = 0;
             }
+            goto ending;
         }
 
 
@@ -362,6 +374,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_is_busy();
             glcd.drawstring(col, 1, " *9*");
             glcd_not_busy();
+            goto ending;
         }
 
 
@@ -369,6 +382,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_is_busy();
             glcd.drawstring(col, 1, "*10*");
             glcd_not_busy();
+            goto ending;
         }
 
 
@@ -376,6 +390,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
             glcd_is_busy();
             glcd.drawstring(col, 1, "*HI*");
             glcd_not_busy();
+            goto ending;
         }
 
 
