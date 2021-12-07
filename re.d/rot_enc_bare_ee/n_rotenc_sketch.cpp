@@ -1,3 +1,4 @@
+// Tue  7 Dec 12:19:20 UTC 2021
 // Mon  6 Dec 21:20:13 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
@@ -106,12 +107,12 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00i  22:23z");
-    glcd.drawstring(1, 3, "             f131aad");
+    glcd.drawstring(1, 1, "RTver 00-00j  12:19z");
+    glcd.drawstring(1, 3, "             98a61d0"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q0"); // overwritten by:
+    glcd.drawstring(1, 5, " ra01k  c3q1"); // overwritten by:
     glcd.drawstring(1, 5, " bare rotary encoder");
-    glcd.drawstring(1, 7, " FIFO exp dd 06DEC21 ");
+    glcd.drawstring(1, 7, " FIFO exp ee 07DEC21 ");
     glcd.display();
     glcd.clear(); // use sparingly
     glcd_not_busy();
