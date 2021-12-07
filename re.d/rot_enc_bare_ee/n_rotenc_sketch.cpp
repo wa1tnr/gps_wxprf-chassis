@@ -1,4 +1,4 @@
-// Tue  7 Dec 13:40:37 UTC 2021
+// Tue  7 Dec 13:42:30 UTC 2021
 // Mon  6 Dec 21:20:13 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
@@ -109,10 +109,10 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00l  13:40z");
-    glcd.drawstring(1, 3, "             3f12dbb"); // previous commit
+    glcd.drawstring(1, 1, "RTver 00-00m  13:42z");
+    glcd.drawstring(1, 3, "             ba55469"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q4"); // overwritten by:
+    glcd.drawstring(1, 5, " ra01k  c3q5"); // overwritten by:
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp ee 07DEC21 ");
     glcd.display();
@@ -256,7 +256,8 @@ void setup() {
 
 char bufferln[20] = "abcdefghijklmnopqrs";
 
-void lcd_rot_multi_alts(void) {
+// void lcd_rot_multi_alts(void) {
+void lcd_rot_onscreen_counter(void) {
     int col = 84;
     itoa(positionExternal, bufferln, DEC);
 
@@ -284,16 +285,8 @@ void lcd_rot_multi_alts(void) {
 
 void lcd_rot_multi_3_to_9_alts(void) {
     int col = 84;
-    int fake = 0;
 
     int position = positionExternal;
-
-/*
-    // trying to test default: a bit more thoroughly:
-    glcd_is_busy();
-    glcd.drawstring(col, 1, "    ");
-    glcd_not_busy();
-*/
 
     switch (position) {
     case 0:
@@ -323,8 +316,6 @@ void lcd_rot_multi_3_to_9_alts(void) {
         glcd_not_busy();
         digitalWrite(backlight, LOW); // turn it off, brother
         goto ending;
-
-// falls through to here if >3:
 
     case 4:
         glcd_is_busy();
@@ -385,11 +376,9 @@ void lcd_rot_multi_3_to_9_alts(void) {
     case 12:
     case 13:
     case 14:
-/*
-            glcd_is_busy();
-            glcd.drawstring(col, 1, "    ");
-            glcd_not_busy();
-*/
+        glcd_is_busy();
+        glcd.drawstring(col, 1, "    ");
+        glcd_not_busy();
         goto ending;
 
     default:
@@ -444,7 +433,8 @@ void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
         tick_recent = 0; // reset tick_recent -- set the trap for a new acquisition
     }
 
-    lcd_rot_multi_alts(); // not single-shot; do every loop
+    // lcd_rot_multi_alts();
+    lcd_rot_onscreen_counter(); // not single-shot; do every loop
 
     if (pbswitch_recent) {
         pbswitch_recent = 0; // raise FALSE -- set the trap for a new acquisition
