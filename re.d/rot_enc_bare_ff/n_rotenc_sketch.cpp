@@ -457,7 +457,7 @@ void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
 
 void loop() // run over and over again
 {
-    loop_timer(); // suspect! 16:47z 7 Dec
+    // loop_timer(); // suspect! 16:47z 7 Dec
     if (tick_recent) {
         loop_for_rotEnc();
     }

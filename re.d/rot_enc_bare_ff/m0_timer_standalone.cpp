@@ -82,6 +82,7 @@ void blinkenlight(void) {
     darkenlight();
 }
 
+/*
 void introduction() {
     Serial.println("\r\n\r\nThis is the introduction");
     delay(4000);
@@ -93,6 +94,7 @@ void introduction() {
     Serial.println(" ");
     Serial.println(" (end of truncated introduction.  Bye.)");
 }
+*/
 
 void iblinki(void) { // only during WAITFOR
     brightenlight();
@@ -104,22 +106,22 @@ void iblinki(void) { // only during WAITFOR
 void setup_timer(void) {
     pinMode(LED, 1); // OUTPUT
 
-    Serial.begin(38400); // Open serial communications
+    // Serial.begin(38400); // Open serial communications
 
-    delay(2000); // forced 2 second delay -- omit if not desired.
+    // delay(2000); // forced 2 second delay -- omit if not desired.
 
 #ifdef WAITFOR // we want to wait for a serial connection
-    while(!Serial) { // hold for connection
-        iblinki(); delay(300); // optional blinkie with timed delays
-    }
+    // while(!Serial) { // hold for connection
+    //    iblinki(); delay(300); // optional blinkie with timed delays
+    // }
 #endif // #ifdef WAITFOR
 
     // ANSI escape sequence
     //  (yellow text in VT220 terminal:
 
-    Serial.print("\033\133"); // ESC [
-    Serial.print("\063\063"); // 33 - yellow fg
-    Serial.print("m");        // for the stanza
+    // Serial.print("\033\133"); // ESC [
+    // Serial.print("\063\063"); // 33 - yellow fg
+    // Serial.print("m");        // for the stanza
 
     // CLOCK
 
@@ -208,9 +210,9 @@ void setup_timer(void) {
 
     while (TC4->COUNT8.STATUS.bit.SYNCBUSY);            // Wait for synchronization
 
-    Serial.println("pip ");
-    delay(9000);
-    introduction();
+    // Serial.println("pip ");
+    // delay(9000);
+    // introduction();
 }
 
 // 1: state  1, then 2, then -1: darken.
