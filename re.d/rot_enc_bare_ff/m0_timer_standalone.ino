@@ -1,3 +1,10 @@
+[ https://github.com/wa1tnr/m0_timer_standalone/blob/master/m0_timer_standalone.ino ]
+
+ $ tail -251 m0_timer_standalone.ino | sha1sum
+8085eb04c15534efad6e038328f1aea43fbbf550  -
+ $ tail -251 newfile  | sha1sum
+8085eb04c15534efad6e038328f1aea43fbbf550  -
+
 // Sun 24 Jun 02:50:14 UTC 2018
 // 0105-a0a-09-
 
