@@ -1,5 +1,4 @@
-// Tue  7 Dec 13:42:30 UTC 2021
-// Mon  6 Dec 21:20:13 UTC 2021
+// Tue  7 Dec 13:52:46 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
 #include "ST7565.h"
@@ -109,12 +108,12 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00m  13:42z");
-    glcd.drawstring(1, 3, "             ba55469"); // previous commit
+    glcd.drawstring(1, 1, "RTver 00-00n  13:52z");
+    glcd.drawstring(1, 3, "             d70123d"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q5"); // overwritten by:
-    glcd.drawstring(1, 5, " bare rotary encoder");
-    glcd.drawstring(1, 7, " FIFO exp ee 07DEC21 ");
+    glcd.drawstring(1, 5, " ra01k  c3q6"); // overwritten by:
+    glcd.drawstring(1, 5, " rotary enc  dvlp-aa");
+    glcd.drawstring(1, 7, " FIFO ee 07 DEC 2021 ");
     glcd.display();
     glcd.clear(); // use sparingly
     glcd_not_busy();
@@ -382,9 +381,18 @@ void lcd_rot_multi_3_to_9_alts(void) {
         goto ending;
 
     default:
-        glcd_is_busy();
-        glcd.drawstring(col, 1, "*QQ*");
-        glcd_not_busy();
+        if (abs(position) == position) {
+            glcd_is_busy();
+            glcd.drawstring(col, 1, "*QQ*");
+            glcd_not_busy();
+            goto ending;
+        }
+
+        if (abs(position) != position) {
+            glcd_is_busy();
+            glcd.drawstring(col, 1, "*PP*");
+            glcd_not_busy();
+        }
     } // switch
 
   ending:
