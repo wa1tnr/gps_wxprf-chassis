@@ -1,4 +1,4 @@
-// Tue  7 Dec 13:14:30 UTC 2021
+// Tue  7 Dec 13:40:37 UTC 2021
 // Mon  6 Dec 21:20:13 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
@@ -83,7 +83,8 @@ uint32_t timer = millis();
 ST7565 glcd(11, 10, 9, 6, 5); // good 4 Dec 2021
 
 // definitions follow
-void nopp(void) { }; // no operation
+void nopp(void) {
+}; // no operation
 
 void glcd_is_busy(void) {
     glcd_busy = -1; // TRUE
@@ -108,10 +109,10 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00k  13:14z");
-    glcd.drawstring(1, 3, "             eace4d1"); // previous commit
+    glcd.drawstring(1, 1, "RTver 00-00l  13:40z");
+    glcd.drawstring(1, 3, "             3f12dbb"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q3"); // overwritten by:
+    glcd.drawstring(1, 5, " ra01k  c3q4"); // overwritten by:
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp ee 07DEC21 ");
     glcd.display();
@@ -273,7 +274,7 @@ void lcd_rot_multi_alts(void) {
     }
 
     if (positionExternal < 0) {
-        glcd.drawstring(col +  6, 3, bufferln);
+        glcd.drawstring(col + 6, 3, bufferln);
         glcd.drawstring(col, 3, " -");
     }
 
@@ -286,9 +287,17 @@ void lcd_rot_multi_3_to_9_alts(void) {
     int fake = 0;
 
     int position = positionExternal;
+
+/*
+    // trying to test default: a bit more thoroughly:
+    glcd_is_busy();
+    glcd.drawstring(col, 1, "    ");
+    glcd_not_busy();
+*/
+
     switch (position) {
     case 0:
-    _meaningfulLabel_zed:
+      _meaningfulLabel_zed:
 
         glcd_is_busy();
         glcd.drawstring(col, 1, " *0*");
@@ -296,7 +305,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
         goto ending;
 
     case 1:
-    _meaningfulLabel_one:
+      _meaningfulLabel_one:
         glcd_is_busy();
         glcd.drawstring(col, 1, " *1*");
         glcd_not_busy();
@@ -317,73 +326,79 @@ void lcd_rot_multi_3_to_9_alts(void) {
 
 // falls through to here if >3:
 
-    if (positionExternal == 4) {
+    case 4:
         glcd_is_busy();
         glcd.drawstring(col, 1, " ~4~");
         glcd_not_busy();
         digitalWrite(backlight, HIGH); // turn it on, sister
         goto ending;
-    }
 
-    if (positionExternal == 5) {
+    case 5:
         glcd_is_busy();
         glcd.drawstring(col, 1, " *5*");
         glcd_not_busy();
         morseKludgeFlg = -1;
         goto ending;
-    }
 
-    if (positionExternal >= 6) {
+        // if (positionExternal >= 6) {
 
-        if (positionExternal == 6) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, " #6#");
-            glcd_not_busy();
-            goto ending;
+    case 6:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " #6#");
+        glcd_not_busy();
+        goto ending;
+
+    case 7:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *7*");
+        glcd_not_busy();
+        goto ending;
+
+    case 8:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " ?8?");
+        glcd_not_busy();
+        if (morseKludgeFlg) {
+            morse();
+            morseKludgeFlg = 0;
         }
+        goto ending;
 
-        if (positionExternal == 7) {
+    case 9:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, " *9*");
+        glcd_not_busy();
+        goto ending;
+
+    case 10:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, "*10*");
+        glcd_not_busy();
+        goto ending;
+
+    case 11:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, "*HI*");
+        glcd_not_busy();
+        goto ending;
+
+    case 12:
+    case 13:
+    case 14:
+/*
             glcd_is_busy();
-            glcd.drawstring(col, 1, " *7*");
+            glcd.drawstring(col, 1, "    ");
             glcd_not_busy();
-            goto ending;
-        }
+*/
+        goto ending;
 
-        if (positionExternal == 8) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, " ?8?");
-            glcd_not_busy();
-            if (morseKludgeFlg) {
-                morse();
-                morseKludgeFlg = 0;
-            }
-            goto ending;
-        }
-
-        if (positionExternal == 9) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, " *9*");
-            glcd_not_busy();
-            goto ending;
-        }
-
-        if (positionExternal == 10) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, "*10*");
-            glcd_not_busy();
-            goto ending;
-        }
-
-        if (positionExternal >= 11) {
-            glcd_is_busy();
-            glcd.drawstring(col, 1, "*HI*");
-            glcd_not_busy();
-            goto ending;
-        }
-
-    } // > six
+    default:
+        glcd_is_busy();
+        glcd.drawstring(col, 1, "*QQ*");
+        glcd_not_busy();
     } // switch
-    ending:
+
+  ending:
     nopp();
 }
 
@@ -395,7 +410,6 @@ void proc_tick(void) { // a 'tick' of the rotary shaft encoder signal train
     if (oldState != thisState) {
 
         positionInternal += KNOBDIR[thisState | (oldState << 2)];
-
 
         if (thisState == LATCHSTATE)
             positionExternal = positionInternal >> 2;
