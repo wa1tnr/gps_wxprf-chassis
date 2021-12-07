@@ -1,4 +1,4 @@
-// Tue  7 Dec 12:58:45 UTC 2021
+// Tue  7 Dec 13:14:30 UTC 2021
 // Mon  6 Dec 21:20:13 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
@@ -108,10 +108,10 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00j  12:58z");
-    glcd.drawstring(1, 3, "             c70a5da"); // previous commit
+    glcd.drawstring(1, 1, "RTver 00-00k  13:14z");
+    glcd.drawstring(1, 3, "             eace4d1"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q2"); // overwritten by:
+    glcd.drawstring(1, 5, " ra01k  c3q3"); // overwritten by:
     glcd.drawstring(1, 5, " bare rotary encoder");
     glcd.drawstring(1, 7, " FIFO exp ee 07DEC21 ");
     glcd.display();
@@ -290,39 +290,33 @@ void lcd_rot_multi_3_to_9_alts(void) {
     case 0:
     _meaningfulLabel_zed:
 
-    // if (positionExternal == 0) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *0*");
         glcd_not_busy();
         goto ending;
-    // }
 
     case 1:
     _meaningfulLabel_one:
-    // if (positionExternal == 1) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *1*");
         glcd_not_busy();
         goto ending;
-    // }
 
     case 2:
-    // if (positionExternal == 2) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *2*");
         glcd_not_busy();
         goto ending;
-    // }
-
 
     case 3:
-    // if (positionExternal == 3) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " &3&");
         glcd_not_busy();
         digitalWrite(backlight, LOW); // turn it off, brother
         goto ending;
-    // }
+
+// falls through to here if >3:
+
     if (positionExternal == 4) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " ~4~");
@@ -330,6 +324,7 @@ void lcd_rot_multi_3_to_9_alts(void) {
         digitalWrite(backlight, HIGH); // turn it on, sister
         goto ending;
     }
+
     if (positionExternal == 5) {
         glcd_is_busy();
         glcd.drawstring(col, 1, " *5*");
@@ -347,16 +342,12 @@ void lcd_rot_multi_3_to_9_alts(void) {
             goto ending;
         }
 
-
         if (positionExternal == 7) {
             glcd_is_busy();
             glcd.drawstring(col, 1, " *7*");
             glcd_not_busy();
             goto ending;
         }
-
-
-
 
         if (positionExternal == 8) {
             glcd_is_busy();
@@ -369,14 +360,12 @@ void lcd_rot_multi_3_to_9_alts(void) {
             goto ending;
         }
 
-
         if (positionExternal == 9) {
             glcd_is_busy();
             glcd.drawstring(col, 1, " *9*");
             glcd_not_busy();
             goto ending;
         }
-
 
         if (positionExternal == 10) {
             glcd_is_busy();
@@ -385,15 +374,12 @@ void lcd_rot_multi_3_to_9_alts(void) {
             goto ending;
         }
 
-
         if (positionExternal >= 11) {
             glcd_is_busy();
             glcd.drawstring(col, 1, "*HI*");
             glcd_not_busy();
             goto ending;
         }
-
-
 
     } // > six
     } // switch
