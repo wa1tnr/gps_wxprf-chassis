@@ -1,4 +1,4 @@
-// Tue  7 Dec 13:52:46 UTC 2021
+// Tue  7 Dec 16:35:57 UTC 2021
 
 #include <Arduino.h> // multi-file requires empty .ino and other .cpp - and this include
 #include "ST7565.h"
@@ -108,12 +108,12 @@ void glcd_not_busy(void) {
 
 void lcd_revision(void) {
     glcd_is_busy();
-    glcd.drawstring(1, 1, "RTver 00-00n  13:52z");
-    glcd.drawstring(1, 3, "             d70123d"); // previous commit
+    glcd.drawstring(1, 1, "RTver 00-00p  16:35z");
+    glcd.drawstring(1, 3, "             48fa9a8"); // previous commit
     glcd.drawstring(1, 3, " CHUPACABRA");
-    glcd.drawstring(1, 5, " ra01k  c3q6"); // overwritten by:
+    glcd.drawstring(1, 5, " ra01k  c3q8"); // overwritten by:
     glcd.drawstring(1, 5, " rotary enc  dvlp-aa");
-    glcd.drawstring(1, 7, " FIFO ee 07 DEC 2021 ");
+    glcd.drawstring(1, 7, " FIFO ff 07 DEC 2021 ");
     glcd.display();
     glcd.clear(); // use sparingly
     glcd_not_busy();
@@ -240,11 +240,17 @@ void morse_rare(void) {
     dit();
 }
 
+// 104:void setup_timer(void) {
+extern void setup_timer(void);
+// 232:void loop_timer(void) {
+extern void loop_timer(void);
+
 void setup() {
     setup_neoPixel(); // club demo
     pinMode(buzzPin, OUTPUT); // club demo
     setup_rotEnc();
     setup_LCD();
+    setup_timer(); // 16:46z 7 Dec experimental
     delay(200);
     /* KEEP THESE FOUR LINES 16:17z 06 Dec 2021: */
     if (0) {
@@ -451,6 +457,7 @@ void loop_for_rotEnc(void) { // if tick_recent  or  if pbswitch_recent
 
 void loop() // run over and over again
 {
+    loop_timer(); // suspect! 16:47z 7 Dec
     if (tick_recent) {
         loop_for_rotEnc();
     }
