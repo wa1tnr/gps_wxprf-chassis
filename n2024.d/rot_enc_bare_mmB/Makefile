@@ -1,5 +1,8 @@
 
 all:
+	@echo;echo;echo;echo;echo;echo
+	@echo "  Rot Enc" | figlet ;echo
+	@echo;echo;echo;date;echo;echo
 	pio run
 
 verbose:
@@ -7,6 +10,12 @@ verbose:
 
 env:
 	@echo  "    " export PS1=\\042 make \\044   \\042    \\073 source ./.profile__platformio \# lb
+
+suite_msgs:
+	@echo;echo;echo;  date;  echo;echo; ls --color /dev
+
+suite:	suite_msgs
+	@make distclean ; make; make run
 
 term:
 	@echo "sleeping 2"
